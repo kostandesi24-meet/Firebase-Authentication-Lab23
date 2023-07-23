@@ -8,7 +8,14 @@ app.config['SECRET_KEY'] = 'super-secret-key'
 
 @app.route('/', methods=['GET', 'POST'])
 def signin():
-    return render_template("signin.html")
+    if request.method=='POST':
+        try: 
+            login_session['user']=auth.signin_with_email_and_password(form.request['email'] ,form.request['password'])
+            return redirect(url_for('add_tweet'))
+        except:
+            autherror="auth error"
+    return render_template("signin.html" , error = autherror)
+
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -19,7 +26,6 @@ def signup():
             return redirect(url_for('add_tweet'))
         except:
             return render_template("signup.html" , error = "auth error")
-    return render_template('signup.html')
 
 
 @app.route('/add_tweet', methods=['GET', 'POST'])
