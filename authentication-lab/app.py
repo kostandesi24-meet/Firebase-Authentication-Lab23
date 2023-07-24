@@ -5,27 +5,34 @@ import pyrebase
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['SECRET_KEY'] = 'super-secret-key'
 
+@app.route('/signout' , methods=['GET','POST'])
+def signout():
+    login_session['user']=""
+    return redirect(url_for('signin'))
 
 @app.route('/', methods=['GET', 'POST'])
 def signin():
+    error = ""
     if request.method=='POST':
         try: 
-            login_session['user']=auth.signin_with_email_and_password(form.request['email'] ,form.request['password'])
-            return redirect(url_for('add_tweet'))
+            login_session['user']=auth.sign_in_with_email_and_password(request.form['email'] ,request.form['password'])
+            return redirect(url_for('add_tweet'))        
         except:
-            autherror="auth error"
-    return render_template("signin.html" , error = autherror)
+            error="auth error"
+    return render_template("signin.html" , error = error)
 
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    error= ""
     if request.method == 'POST':
         try: 
-            login_session['user'] = auth.create_user_with_email_and_password(form.request['email'] ,form.request['password'])
+            login_session['user'] = auth.create_user_with_email_and_password(request.form['email'] ,request.form['password'])
             return redirect(url_for('add_tweet'))
         except:
-            return render_template("signup.html" , error = "auth error")
+            error = "auth error"
+    return render_template("signup.html" , error = error)
 
 
 @app.route('/add_tweet', methods=['GET', 'POST'])
