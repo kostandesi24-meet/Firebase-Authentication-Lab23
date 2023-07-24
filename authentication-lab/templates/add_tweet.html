@@ -2,11 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Tweets</title>
 </head>
 <body>
-    Great Job!
+    <form method="POST" action="/tweet">
+        <!--title-->
+        <label>Title*</label>
+        <input type="text"  name="title" required>
+        <!--tweet-->
+        <label>Text*</label>
+        <input type="text"  name="text" maxlength="280">
+        <!--submit-->
+        <input type="submit">
+    </form>
     <a href="/signout"><button>signout</button></a>
+    <h1>{{error}}</h1>
     
 </body>
 </html>
