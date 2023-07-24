@@ -55,14 +55,14 @@ def signin():
 def signup():
     error= ""
     if request.method == 'POST':
-        # try: 
-        login_session['user'] = auth.create_user_with_email_and_password(request.form['email'] ,request.form['password'])
-        uid=login_session['user']['localId']
-        user={"email":request.form['email'] , "password":request.form['password'],"full_name":request.form['full_name'] ,"username":request.form['username'],"bio":request.form['bio']}
-        db.child('Users').child('uid').set('user')
-        return redirect(url_for('add_tweet'))
-        # except:
-        #     error = "auth error"
+        try: 
+            login_session['user'] = auth.create_user_with_email_and_password(request.form['email'] ,request.form['password'])
+            uid=login_session['user']['localId']
+            user={"email":request.form['email'] , "password":request.form['password'],"full_name":request.form['full_name'] ,"username":request.form['username'],"bio":request.form['bio']}
+            db.child('Users').child(uid).set(user)
+            return redirect(url_for('add_tweet'))
+        except:
+            error = "auth error"
     return render_template("signup.html" , error = error)
 
 
@@ -70,6 +70,10 @@ def signup():
 def add_tweet():
     return render_template("add_tweet.html")
 
+@app.route('/all_tweets' , methods = ['GET' , 'POST'])
+def feed():
+    tweets= db.child('Tweets').get().val()
+    return render_template('tweets.html' , tweets=tweets)
 
 if __name__ == '__main__':
     app.run(debug=True)

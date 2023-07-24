@@ -7,16 +7,28 @@
 <body>
     <form method="POST" action="/tweet">
         <!--title-->
-        <label>Title*</label>
+        <div>
+            <label>Title*</label>
         <input type="text"  name="title" required>
-        <!--tweet-->
-        <label>Text*</label>
-        <input type="text"  name="text" maxlength="280">
-        <!--submit-->
-        <input type="submit">
+        </div>
+        
+        <div>
+            <!--tweet-->
+            <label>Text*</label>
+            <input type="text"  name="text" maxlength="280">
+        
+        </div>
+
+        <div>        
+            <!--submit-->
+            <input type="submit">
+        </div>
+
     </form>
     <a href="/signout"><button>signout</button></a>
     <h1>{{error}}</h1>
+    <br><a href="/all_tweets"><button>see feed</button></a>
+
     
 </body>
 </html>
